@@ -1,1 +1,1 @@
-# 22-NeuKron
+# NeuKron: Constant-Size Lossy Compression of Sparse Reorderable Matrices and Tensors
