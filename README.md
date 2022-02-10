@@ -1,7 +1,8 @@
 # NeuKron: Constant-Size Lossy Compression of Sparse Reorderable Matrices and Tensors
 
-## Datasets
+This repository is the official implementation of NeuKron: Constant-Size Lossy Compression of Sparse Reorderable Matrices and Tensors (anonymized).
 
+## Datasets
 
 |Name|shape|# of nonzeros|Source|Link|
 |-|-|-|-|-|
