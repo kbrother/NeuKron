@@ -17,18 +17,21 @@ The format of an input file is as follows. For the first line, the order of tens
 
 ## Arguments for training and evaluation
 
-### Common arguments
+### Positional argument
+- `action`: `train` for training the model, `inference` for evaluation
+
+### Optional arguments (common)
 - `-hs`, `--hidden_size`: hidden dimension of the model
 - `-b`, `--batch_size`: batch size for training and evaluating the model
 - `-de`, `--device`: gpu id(s) for execution
 
-## For training
+### Optional arguments (for training)
 - `-e`, `--max_epochs`: number of training epochs
 - `-lr`, `--lr`: learning rate for the parameters
 - `-sp`, `--save_path`: path for saving the parameters
 - `-ppu`, `--perm_per_update`: a number of permutation updates per epoch
 
-### For evaluation
+### Optional arguments (for evaluation)
 - `-lp`, `--load_path`: path for loading the parameters
 
 ## Real-world datasets we used
@@ -36,9 +39,9 @@ The format of an input file is as follows. For the first line, the order of tens
 |Name|shape|# of nonzeros|Source|Link|
 |-|-|-|-|-|
 |email|1,005 x 25,919|92,159|[Austin R. Benson](https://www.cs.cornell.edu/~arb/data/email-Eu/)|[Link](https://drive.google.com/open?id=1oFnrRaLPlYCNgABInjjW8fUgui49eOZN)|
-|nyc|1,083 x 38,333|91,024|||
-|tky|2,293 x 61,858|211,955|||
-|kasandr|414,520 x 503,702|903,366|||
+|nyc|1,083 x 38,333|91,024|[Dingqi Yang](https://sites.google.com/site/yangdingqi/home/foursquare-dataset)|[Link](http://www.google.com/url?q=http%3A%2F%2Fwww-public.it-sudparis.eu%2F~zhang_da%2Fpub%2Fdataset_tsmc2014.zip&sa=D&sntz=1&usg=AFQjCNG04iQk2xN3SLlG7X4r1fGjb88Tpw)|
+|tky|2,293 x 61,858|211,955|[Dingqi Yang](https://sites.google.com/site/yangdingqi/home/foursquare-dataset)|[Link](http://www.google.com/url?q=http%3A%2F%2Fwww-public.it-sudparis.eu%2F~zhang_da%2Fpub%2Fdataset_tsmc2014.zip&sa=D&sntz=1&usg=AFQjCNG04iQk2xN3SLlG7X4r1fGjb88Tpw)|
+|kasandr|414,520 x 503,702|903,366|[UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/KASANDR)|[Link](https://archive.ics.uci.edu/ml/datasets/KASANDR)|
 |threads|176,445 x 595,778|1,457,727|[Austin R. Benson](https://www.cs.cornell.edu/~arb/data/threads-math-sx/)|[Link](https://drive.google.com/open?id=1aoNCO5IfY14cIKyTir-qAZl78sgMixhA)|
 |twitch|790,100 x 15,524,309|234,422,289|[Julian McAuley](https://cseweb.ucsd.edu/~jmcauley/datasets.html#twitch)|[Link](https://www.google.com/url?q=https://drive.google.com/drive/folders/1BD8m7a8m7onaifZay05yYjaLxyVV40si?usp%3Dsharing&source=gmail-html&ust=1629428377164000&usg=AFQjCNFXimN1hHftvhgIu5iKUTZiOsep8A)|
 |nips|2,482 x 2,862 x 14,036|3,101,609|[FROSTT](http://frostt.io/tensors/nips/)|[Link](https://s3.us-east-2.amazonaws.com/frostt/frostt_data/nips/nips.tns.gz)|
