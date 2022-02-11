@@ -9,9 +9,27 @@ To run the provided codes, you need to install `PyTorch` and `PyTorch Scatter`. 
 - `PyTorch`: https://pytorch.org/get-started/locally/
 - `PyTorch Scatter`: https://github.com/rusty1s/pytorch_scatter
 
+<!--
 ## Input file format
 
 The format of an input file is as follows. For the first line, the order of tensor and the dimensions of each order is provided.
+-->
+
+## Arguments for training and evaluation
+
+### Common arguments
+- `-hs`, `--hidden_size`: hidden dimension of the model
+- `-b`, `--batch_size`: batch size for training and evaluating the model
+- `-de`, `--device`: gpu id(s) for execution
+
+## For training
+- `-e`, `--max_epochs`: number of training epochs
+- `-lr`, `--lr`: learning rate for the parameters
+- `-sp`, `--save_path`: path for saving the parameters
+- `-ppu`, `--perm_per_update`: a number of permutation updates per epoch
+
+### For evaluation
+- `-lp`, `--load_path`: path for loading the parameters
 
 ## Real-world datasets we used
 
