@@ -1,0 +1,20 @@
+epoch:0, loss after perm:774.3614501953125
+epoch:0, loss after model update:750.7342834472656, time per epoch: 5.835275411605835
+epoch:1, loss after perm:724.1289672851562
+epoch:1, loss after model update:696.8620910644531, time per epoch: 0.04456448554992676
+epoch:2, loss after perm:666.1122741699219
+epoch:2, loss after model update:649.7372131347656, time per epoch: 0.04539847373962402
+epoch:3, loss after perm:615.93798828125
+epoch:3, loss after model update:602.2850646972656, time per epoch: 0.0455019474029541
+epoch:4, loss after perm:580.9927062988281
+epoch:4, loss after model update:568.9962158203125, time per epoch: 0.04506325721740723
+epoch:5, loss after perm:560.9784545898438
+epoch:5, loss after model update:545.1607971191406, time per epoch: 0.04718661308288574
+epoch:6, loss after perm:540.7490844726562
+epoch:6, loss after model update:527.7700500488281, time per epoch: 0.04544997215270996
+epoch:7, loss after perm:496.24314880371094
+epoch:7, loss after model update:485.6299133300781, time per epoch: 0.04624438285827637
+epoch:8, loss after perm:463.6635437011719
+epoch:8, loss after model update:452.4334716796875, time per epoch: 0.04513955116271973
+epoch:9, loss after perm:447.37835693359375
+epoch:9, loss after model update:437.3301239013672, time per epoch: 0.046803951263427734

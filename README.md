@@ -30,11 +30,14 @@ The format of an input file is as follows. For the first line, the order of tens
 - `-lr`, `--lr`: learning rate for the parameters
 - `-sp`, `--save_path`: path for saving the parameters
 - `-ppu`, `--perm_per_update`: a number of permutation updates per epoch
+- `-perm`: enable order initialization (matrix only)
 
 ### Optional arguments (for evaluation)
 - `-lp`, `--load_path`: path for loading the parameters
 
 ## Example Commands
+
+For example dataset, we provide ```example_matrix.txt``` and ```example_tensor.txt``` in `data/`.
 
 To train the model, run
 ```
