@@ -2,7 +2,18 @@
 
 This repository is the official implementation of NeuKron: Constant-Size Lossy Compression of Sparse Reorderable Matrices and Tensors (anonymized).
 
-## Datasets
+## Requirements
+
+To run the provided codes, you need to install `PyTorch` and `PyTorch Scatter`. Since the installation commands for the packages rely on the environments, visit following pages to install the packages:
+
+- `PyTorch`: https://pytorch.org/get-started/locally/
+- `PyTorch Scatter`: https://github.com/rusty1s/pytorch_scatter
+
+## Input file format
+
+The format of an input file is as follows. For the first line, the order of tensor and the dimensions of each order is provided.
+
+## Real-world datasets we used
 
 |Name|shape|# of nonzeros|Source|Link|
 |-|-|-|-|-|
