@@ -1,0 +1,20 @@
+epoch:0, loss after perm:111739.4135045819
+epoch:0, loss after model update:109402.46724550612, time after model: 6.006516933441162, end_counter: 0
+epoch:1, loss after perm:107050.51493209787
+epoch:1, loss after model update:105181.50868149986, time after model: 0.13421273231506348, end_counter: 0
+epoch:2, loss after perm:103265.84624889726
+epoch:2, loss after model update:101943.59973241412, time after model: 0.14108991622924805, end_counter: 0
+epoch:3, loss after perm:99567.36517152458
+epoch:3, loss after model update:98216.59133140376, time after model: 0.1398935317993164, end_counter: 0
+epoch:4, loss after perm:96615.85731090052
+epoch:4, loss after model update:95423.21023511665, time after model: 0.13824462890625, end_counter: 0
+epoch:5, loss after perm:93734.75907697948
+epoch:5, loss after model update:92712.46239734185, time after model: 0.14059877395629883, end_counter: 0
+epoch:6, loss after perm:91770.8475683436
+epoch:6, loss after model update:90590.43112889469, time after model: 0.14101076126098633, end_counter: 0
+epoch:7, loss after perm:89572.29713887793
+epoch:7, loss after model update:88653.58956780261, time after model: 0.1405024528503418, end_counter: 0
+epoch:8, loss after perm:87622.79321039747
+epoch:8, loss after model update:86646.24404181632, time after model: 0.13881850242614746, end_counter: 0
+epoch:9, loss after perm:85835.65106074543
+epoch:9, loss after model update:84931.13431170938, time after model: 0.1400165557861328, end_counter: 0
