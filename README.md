@@ -18,7 +18,7 @@ The format of an input file is as follows. For the first line, the order of tens
 ## Arguments for training and evaluation
 
 ### Positional argument
-- `action`: `train` for training the model, `inference` for evaluation
+- `action`: `train` for training the model, `eval` for evaluation
 
 ### Optional arguments (common)
 - `-hs`, `--hidden_size`: hidden dimension of the model
@@ -33,6 +33,18 @@ The format of an input file is as follows. For the first line, the order of tens
 
 ### Optional arguments (for evaluation)
 - `-lp`, `--load_path`: path for loading the parameters
+
+## Example Commands
+
+To train the model, run
+```
+python main.py train -d [DATASET_NAME] -de 0 1 2 3 -hs 90 -lr 1e-2 -e 1500 --ppu 2 -sp [CHECKPOINT_PATH_FOR_SAVE]
+```
+
+To evaluate the model, run
+```
+python main.py eval -d [DATASET_NAME] -lp [CHECKPOINT_PATH_FOR_LOAD]
+```
 
 ## Real-world datasets we used
 
