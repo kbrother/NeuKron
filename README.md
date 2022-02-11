@@ -9,12 +9,6 @@ To run the provided codes, you need to install `PyTorch` and `PyTorch Scatter`. 
 - `PyTorch`: https://pytorch.org/get-started/locally/
 - `PyTorch Scatter`: https://github.com/rusty1s/pytorch_scatter
 
-<!--
-## Input file format
-
-The format of an input file is as follows. For the first line, the order of tensor and the dimensions of each order is provided.
--->
-
 ## Arguments for training and evaluation
 
 ### Positional argument
@@ -41,12 +35,12 @@ For example dataset, we provide ```example_matrix.txt``` and ```example_tensor.t
 
 To train the model, run
 ```
-python main.py train -d [DATASET_NAME] -de 0 1 2 3 -hs 90 -lr 1e-2 -e 1500 --ppu 2 -sp [CHECKPOINT_PATH_FOR_SAVE]
+python main.py train -d [DATASET_NAME] -de 0 1 -hs 90 -lr 1e-2 -e 1500 --ppu 2 -sp [CHECKPOINT_PATH_FOR_SAVE]
 ```
 
 To evaluate the model, run
 ```
-python main.py eval -d [DATASET_NAME] -lp [CHECKPOINT_PATH_FOR_LOAD]
+python main.py eval -d [DATASET_NAME] -de 0 1 -hs 90 -lp [CHECKPOINT_PATH_FOR_LOAD]
 ```
 
 ## Real-world datasets we used
