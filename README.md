@@ -35,7 +35,7 @@ For example dataset, we provide ```example_matrix.txt``` and ```example_tensor.t
 
 To train the model, run
 ```
-python main.py train -d [DATASET_NAME] -de 0 1 -hs 90 -lr 1e-2 -e 1500 --ppu 2 -sp [CHECKPOINT_PATH_FOR_SAVE]
+python main.py train -d [DATASET_NAME] -de 0 1 -hs 90 -lr 1e-2 -e 1500 -ppu 2 -sp [CHECKPOINT_PATH_FOR_SAVE]
 ```
 
 To evaluate the model, run
