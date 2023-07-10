@@ -46,8 +46,10 @@ class hyperGraph:
         lines.pop(0)
         
         # Assume entres are unique
-        lines = [[int(float(word)) for word in line.split(",")] for line in lines if line]
+        lines = [[float(word) for word in line.split(",")] for line in lines if line]
         self.row_idx, self.col_idx, self.val = map(list, zip(*lines))
+        self.row_idx = list(map(int, self.row_idx))
+        self.col_idx = list(map(int, self.col_idx))
         
         self.entry_sum = sum(self.val)       
         self.sq_sum = sum([entry**2 for entry in self.val])

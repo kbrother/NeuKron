@@ -222,7 +222,7 @@ class kronecker_model:
             # Extract nodes and edges
             curr_batch_size = min(batch_size, self.graph.real_num_nonzero - i)
             preds = self.predict_batch(self.graph.indices[i:i+curr_batch_size]).double()
-            vals = torch.LongTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device).double()            
+            vals = torch.FloatTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device).double()            
             curr_loss = (torch.square(preds - vals) - torch.square(preds)).sum()                           
             loss += curr_loss.item()       
             if is_train:
@@ -294,7 +294,7 @@ class kronecker_model:
             # Build an input for the current batch
             curr_batch_size = min(batch_size, num_nnz - i)
             coor_indices = self.indices[coor][i:i+curr_batch_size]
-            vals = torch.LongTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device).double()
+            vals = torch.FloatTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device).double()
             curr_pair = pair_idx[coor_indices]
             
             batched_indices = self.graph.indices[i:i+curr_batch_size]
@@ -419,7 +419,7 @@ class perm_model(kronecker_model):
             # Build an input for the current batch
             curr_batch_size = min(batch_size, num_nnz - i)
             coor_indices = self.indices[coor][i:i+curr_batch_size]
-            vals = torch.LongTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device).double()
+            vals = torch.FloatTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device).double()
             curr_pair = pair_idx[coor_indices]
             
             batched_indices = self.graph.indices[i:i+curr_batch_size]
