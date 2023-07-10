@@ -222,7 +222,7 @@ class kronecker_model:
             curr_batch_size = min(batch_size, self.graph.real_num_nonzero - i)
             nodes, edges = self.graph.row_idx[i:i+curr_batch_size], self.graph.col_idx[i:i+curr_batch_size]
             nodes, edges = torch.LongTensor(nodes).to(self.i_device), torch.LongTensor(edges).to(self.i_device)                          
-            curr_val = torch.LongTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device)
+            curr_val = torch.FloatTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device)
             
             # Convert to lstm inputs
             row_idx = self.node_perm[nodes].unsqueeze(1) // self.node_bases % self.init_row
@@ -311,7 +311,7 @@ class kronecker_model:
                 curr_batch_size = min(batch_size, self.graph.real_num_nonzero - i)
                 nodes, edges = self.graph.row_idx[i:i+curr_batch_size], self.graph.col_idx[i:i+curr_batch_size]
                 nodes, edges = torch.LongTensor(nodes).to(self.i_device), torch.LongTensor(edges).to(self.i_device)                            
-                curr_val = torch.LongTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device)
+                curr_val = torch.FloatTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device)
                 
                 # Convert to row and col
                 curr_row = self.node_perm[nodes].unsqueeze(1) // self.node_bases % self.init_row
@@ -371,7 +371,7 @@ class kronecker_model:
             col_idx = cols.unsqueeze(1) // self.edge_bases % self.init_col
             row_idx_pad = self.init_row * torch.ones([curr_batch_size, self.second_k], dtype=torch.long).to(self.i_device)        
             curr_pair = pair_idx[nodes]
-            curr_val = torch.LongTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device)
+            curr_val = torch.FloatTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device)
             
             # Compute prob_before & prob_after                                   
             temp_list = [(self.node_perm[nodes], prob_before), (self.node_perm[mapping[nodes]], prob_after)]
@@ -445,7 +445,7 @@ class kronecker_model:
             curr_col = self.edge_perm[edges].unsqueeze(1) // self.edge_bases % self.init_col
             curr_row_pad = self.init_row * torch.ones([curr_batch_size, self.second_k], dtype=torch.long).to(self.device[0])        
             curr_row = torch.cat((curr_row, curr_row_pad), dim=-1)
-            curr_val = torch.LongTensor(self.graph.val[i:i+curr_batch_size]).to(self.device[0])            
+            curr_val = torch.FloatTensor(self.graph.val[i:i+curr_batch_size]).to(self.device[0])            
             
             neg_edges = mapping[edges]
             neg_col = self.edge_perm[neg_edges].unsqueeze(1) // self.edge_bases % self.init_col            
@@ -563,7 +563,7 @@ class perm_model(kronecker_model):
             col_idx = cols.unsqueeze(1) // self.edge_bases % self.init_col
             row_idx_pad = self.init_row * torch.ones([curr_batch_size, self.second_k], dtype=torch.long).to(self.i_device)        
             curr_pair = pair_idx[nodes]
-            curr_val = torch.LongTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device)
+            curr_val = torch.FloatTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device)
             
             # Compute prob_before & prob_after                                   
             temp_list = [(self.node_perm[nodes], prob_before), (self.node_perm[mapping[nodes]], prob_after)]
@@ -680,7 +680,7 @@ class perm_model(kronecker_model):
             curr_col = self.edge_perm[edges].unsqueeze(1) // self.edge_bases % self.init_col
             curr_row_pad = self.init_row * torch.ones([curr_batch_size, self.second_k], dtype=torch.long).to(self.device[0])        
             curr_row = torch.cat((curr_row, curr_row_pad), dim=-1)
-            curr_val = torch.LongTensor(self.graph.val[i:i+curr_batch_size]).to(self.device[0])            
+            curr_val = torch.FloatTensor(self.graph.val[i:i+curr_batch_size]).to(self.device[0])            
             
             neg_edges = mapping[edges]
             neg_col = self.edge_perm[neg_edges].unsqueeze(1) // self.edge_bases % self.init_col            
@@ -724,7 +724,7 @@ class perm_model(kronecker_model):
                 curr_batch_size = min(batch_size, self.graph.real_num_nonzero - i)
                 nodes, edges = self.graph.row_idx[i:i+curr_batch_size], self.graph.col_idx[i:i+curr_batch_size]
                 nodes, edges = torch.LongTensor(nodes).to(self.i_device), torch.LongTensor(edges).to(self.i_device)                          
-                curr_val = torch.LongTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device)
+                curr_val = torch.FloatTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device)
 
                 # Convert to lstm inputs
                 row_idx = self.node_perm[nodes].unsqueeze(1) // self.node_bases % self.init_row
