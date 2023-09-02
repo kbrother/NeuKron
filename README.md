@@ -1,6 +1,6 @@
 # NeuKron: Constant-Size Lossy Compression of Sparse Reorderable Matrices and Tensors
 
-This repository is the official implementation of NeuKron: Constant-Size Lossy Compression of Sparse Reorderable Matrices and Tensors, Taehyung Kwon*, Jihoon Ko*, Jinghong jung, and Kijung Shin, WWW 2023.
+This repository is the official implementation of [NeuKron: Constant-Size Lossy Compression of Sparse Reorderable Matrices and Tensors](https://dl.acm.org/doi/pdf/10.1145/3543507.3583226), Taehyung Kwon*, Jihoon Ko*, Jinghong jung, and Kijung Shin, WWW 2023.
 
 ## Requirements
 
