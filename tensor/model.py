@@ -147,7 +147,7 @@ class kronecker_model:
         self.indices = [self.graph.indices[:, i] for i in range(self.order)]
     
     # Initialize the deep learning model
-    def init_model(self, hidden_size, model_type, data_type):
+    def init_model(self, hidden_size, model_type, data_type, save_path):
         if model_type == "many2many":
             self.model = many2many(self.init_size, hidden_size, self.ks, self.graph.sq_sum, self.fixed, data_type)
         elif model_type == "two_mat":
@@ -161,7 +161,13 @@ class kronecker_model:
         if len(self.device) > 1:
             self.model = nn.DataParallel(self.model, device_ids = self.device)                        
         self.model = self.model.to(self.i_device)
-        print(f"The number of params:{ sum(p.numel() for p in self.model.parameters() if p.requires_grad)}")
+        num_params = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
+        num_bytes = num_params * 8
+        for i in range(self.graph.deg):
+            num_bytes += math.ceil(self.dims[i] * self.ks[i] / 8)
+        print(f"The number of bytes: {num_bytes}")
+        with open(save_path + ".txt", 'a') as lossfile:                
+            lossfile.write(f"The number of bytes: {num_bytes}\n")
     
     '''
         Load the permutation
@@ -218,7 +224,7 @@ class kronecker_model:
                 loss.backward()
             loss = loss.item()
 
-        for i in range(0, self.graph.real_num_nonzero, batch_size):    
+        for i in tqdm(range(0, self.graph.real_num_nonzero, batch_size)):    
             # Extract nodes and edges
             curr_batch_size = min(batch_size, self.graph.real_num_nonzero - i)
             preds = self.predict_batch(self.graph.indices[i:i+curr_batch_size]).double()
@@ -415,7 +421,7 @@ class perm_model(kronecker_model):
         # Compute the change of loss                                
         # non zero part (No need to consider zero part because prob_before and prob_after are the same when all entries are zero)
         num_nnz = self.graph.real_num_nonzero
-        for i in range(0, num_nnz, batch_size):
+        for i in tqdm(range(0, num_nnz, batch_size)):
             # Build an input for the current batch
             curr_batch_size = min(batch_size, num_nnz - i)
             coor_indices = self.indices[coor][i:i+curr_batch_size]

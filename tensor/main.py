@@ -3,7 +3,7 @@ import torch
 torch.set_num_threads(4)
 
 import argparse
-from graph import hyperGraph, hyperTensor
+from graph import hyperGraph, hyperTensor, IrregularTensor
 from model import perm_model, kronecker_model
 import time
 import os
@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import pickle
 import copy
 from tqdm import tqdm
+import math
 
 def eval_loss(k_model, args):
     use_cuda = torch.cuda.is_available()
@@ -46,6 +47,7 @@ def train_model(k_model, args):
         
     epoch = 0
     _end_counter = 0
+    start_time = time.time()
     for epoch in range(start_epoch, args.max_epochs):                                                                   
         # Sample permutation         
         start_time = time.time()
@@ -61,9 +63,9 @@ def train_model(k_model, args):
         k_model.model.train()
         optimizer.zero_grad()
         perm_loss = k_model.L2_loss(True, args.batch_size)                            
-        with open(args.save_path + ".txt", 'a') as lossfile:               
-            lossfile.write(f'epoch:{epoch}, loss after perm:{perm_loss}\n')    
-            print(f'epoch:{epoch}, loss after perm:{perm_loss}\n')
+        #with open(args.save_path + ".txt", 'a') as lossfile:               
+        #    lossfile.write(f'epoch:{epoch}, loss after perm:{perm_loss}\n')    
+        #    print(f'epoch:{epoch}, loss after perm:{perm_loss}\n')
         
         #scheduler.step(training_loss)
         # Back-up parameters                
@@ -97,20 +99,12 @@ def train_model(k_model, args):
                     param_group['lr'] = args.lr
                 break
                                         
-        curr_time_model = time.time() - start_time        
+        time_elapsed = time.time() - start_time        
+        curr_fit = 1 - math.sqrt(model_loss/k_model.graph.sq_sum)
         with open(args.save_path + ".txt", 'a') as lossfile:              
-            lossfile.write(f'epoch:{epoch}, loss after model update:{model_loss}, time after model: {curr_time_model}, end_counter: {_end_counter}\n')
-        print(f'epoch:{epoch}, loss after model update:{model_loss}, time after model: {curr_time_model}\n')
-
-        if (epoch + 1) % 100 == 0:
-            torch.save({
-                'epoch': epoch,
-                'model_state_dict': k_model.model.state_dict(),
-                'optimizer_state_dict': optimizer.state_dict(),
-                'loss': model_loss,
-                'perms': k_model.perms
-            }, args.save_path + ".pt")                
-            
+            lossfile.write(f'epoch:{epoch}, Fitness:{curr_fit}, running time: {time_elapsed}, end_counter: {_end_counter}\n')
+        print(f'epoch:{epoch}, Fitness:{curr_fit}, running time: {time_elapsed}\n')
+        
         if (min_loss - model_loss) / min_loss <= 1e-5:
             _end_counter += 1
         else:
@@ -209,24 +203,17 @@ def load_model(k_model, args, device):
     
     # Check load is succeed
     k_model.model.eval()
-                     
+              
+        
+# python tensor/main.py -d cms -de 0 -hs 10 -b 262144 -e 500 -lr 1e-2 -sp results/cms_hs10_lr0.01 -dt double 
 if __name__ == '__main__':
     #os.environ["CUDA_VISIBLE_DEVICES"] = "1,2"
     parser = argparse.ArgumentParser()
     parser.add_argument('action', type=str, help='train, eval')
     parser.add_argument("-d", "--dataset", type=str)
     parser.add_argument(
-        "-td", "--test_data", 
-        action="store", default="none", type=str
-    )
-    parser.add_argument(
         "-sz", "--init_size",
         action="store", default=2, type=int
-    )
-    
-    parser.add_argument(
-        "-p", "--perm_file",
-        action="store", default=False, type=bool
     )
     
     parser.add_argument(
@@ -308,8 +295,8 @@ if __name__ == '__main__':
     print(f'fixed:{args.fixed}, hidden state: {args.hidden_size}, perm: {args.load_perm}')
     
     # Load graph    
-    data_file = "../data/" + args.dataset + ".txt"    
-    hgraph = hyperTensor(data_file)    
+    data_file = "../data/23-Irregular-Tensor/" + args.dataset + ".pickle"    
+    hgraph = IrregularTensor(data_file)    
     print(f'dims:{hgraph.dims}, nnz:{hgraph.real_num_nonzero}')
     
     # Initialize model
@@ -337,7 +324,7 @@ if __name__ == '__main__':
             print('load_perm => False (since len(ks) > 2)')
         k_model.init_permutation()
         
-    k_model.init_model(args.hidden_size, args.model, args.data_type)
+    k_model.init_model(args.hidden_size, args.model, args.data_type, args.save_path)
     
     # test loss
     if args.action == 'train':

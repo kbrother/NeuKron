@@ -3,6 +3,8 @@ import torch
 from scipy.sparse import coo_matrix
 import numpy as np
 import tqdm
+import pickle
+
 
 # Class that saves hypergraph
 class hyperGraph:
@@ -61,6 +63,7 @@ class hyperGraph:
                        shape=(self.num_row, self.num_col))
         self.inci_csr, self.inci_csc = self.inci_coo.tocsr(), self.inci_coo.tocsc()       
 
+        
 # Class that saves hypergraph
 class hyperTensor:
     def __init__(self, file_name):
@@ -78,4 +81,50 @@ class hyperTensor:
         self.entry_sum = self.val.sum()
         self.sq_sum = (self.val ** 2).sum()
         print(f'nnz: {self.real_num_nonzero}, entry sum: {self.entry_sum}, square sum: {self.sq_sum}')
+
         
+class IrregularTensor:
+    
+    def __init__(self, file_path):
+        '''
+            Params for Neukron
+        '''
+        with open(file_path, 'rb') as f:
+            raw_dict = pickle.load(f)            
+       
+        self.indices = np.transpose(np.array(raw_dict['idx']))
+        self.real_num_nonzero = self.indices.shape[0]
+        self.val = np.array(raw_dict['val'])
+        self.deg = self.indices.shape[1]
+        self.entry_sum = self.val.sum()
+        self.sq_sum = (self.val ** 2).sum()
+        print(f'nnz: {self.real_num_nonzero}, entry sum: {self.entry_sum}, square sum: {self.sq_sum}')
+        
+        '''
+            Params for irregular tensor
+        '''        
+        idx2newidx = np.argsort(self.indices[:, -1])
+        for m in range(self.deg):
+            self.indices[:, m] = self.indices[idx2newidx, m]
+        self.val = self.val[idx2newidx]            
+
+        # save tensor stat       
+        self.dims = []
+        self.max_first = max(self.indices[:, 0]) + 1
+        self.num_tensor = max(self.indices[:, -1]) + 1
+        self.middle_dim = []
+        for m in range(1, self.deg-1):
+            self.middle_dim.append(max(self.indices[:, m]) + 1)                                           
+        self.dims = [self.max_first] + self.middle_dim + [self.num_tensor]
+     
+        self.tidx2start = [0]
+        for i in range(self.real_num_nonzero):
+            if self.indices[self.tidx2start[-1], -1] != self.indices[i, -1]:
+                self.tidx2start.append(i)
+        self.tidx2start.append(self.real_num_nonzero)
+
+        # Set first dim
+        self.first_dim = []
+        for i in range(self.num_tensor):
+            self.first_dim.append(max(self.indices[self.tidx2start[i]:self.tidx2start[i+1], 0]) + 1)
+        self.first_dim = np.array(self.first_dim)
