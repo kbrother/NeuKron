@@ -164,7 +164,7 @@ class kronecker_model:
         num_params = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
         num_bytes = num_params * 8
         for i in range(self.graph.deg):
-            num_bytes += math.ceil(self.dims[i] * self.ks[i] / 8)
+            num_bytes += math.ceil(self.graph.dims[i] * self.ks[i] / 8)
         print(f"The number of bytes: {num_bytes}")
         with open(save_path + ".txt", 'a') as lossfile:                
             lossfile.write(f"The number of bytes: {num_bytes}\n")
