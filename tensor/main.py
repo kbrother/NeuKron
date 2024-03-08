@@ -48,6 +48,8 @@ def train_model(k_model, args):
     epoch = 0
     _end_counter = 0
     start_time = time.time()
+    model_state_dict = copy.deepcopy(k_model.model.state_dict())
+    perms = [perm.clone() for perm in k_model.perms]
     for epoch in range(start_epoch, args.max_epochs):                                                                   
         # Sample permutation         
         start_time = time.time()
@@ -112,15 +114,22 @@ def train_model(k_model, args):
             
         if min_loss > model_loss:
             min_loss = model_loss
-            torch.save({
-                'epoch': epoch,
-                'model_state_dict': k_model.model.state_dict(),
-                'optimizer_state_dict': optimizer.state_dict(),
-                'loss': model_loss,
-                'perms': k_model.perms
-            }, args.save_path + "_min.pt") 
+            model_state_dict = copy.deepcopy(k_model.model.state_dict())
+            perms = [perm.clone() for perm in k_model.perms]
+            
+        if time_elapsed >= 3600 * 12:
+            break
+            
         if _end_counter >= 100:
             break
+    
+    k_model.model.load_state_dict(model_state_dict)
+    k_model.perms = perms
+    real_loss = k_model.L2_loss_it(args.batch_size)
+    real_fit = 1 - math.sqrt(real_loss/k_model.graph.sq_sum)
+    print(f'loss on irregular tensor: {real_fit}\n')
+    with open(args.save_path + ".txt", 'a') as lossfile:
+        lossfile.write(f'loss on irregular tensor: {real_fit}\n')
                 
 def noperm_train(k_model, args):
     print(f'learning rate: {args.lr}')
@@ -205,7 +214,7 @@ def load_model(k_model, args, device):
     k_model.model.eval()
               
         
-# python tensor/main.py -d cms -de 0 -hs 10 -b 262144 -e 500 -lr 1e-2 -sp results/cms_hs10_lr0.01 -dt double 
+# python tensor/main.py train -d cms -de 0 -hs 10 -b 262144 -e 500 -lr 1e-2 -sp results/cms_hs10_lr0.01 -dt double 
 if __name__ == '__main__':
     #os.environ["CUDA_VISIBLE_DEVICES"] = "1,2"
     parser = argparse.ArgumentParser()

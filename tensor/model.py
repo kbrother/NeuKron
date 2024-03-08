@@ -210,6 +210,7 @@ class kronecker_model:
             # print(inputs.shape, inputs.max(dim=0), inputs.min(dim=0))
         return self.model(inputs)
     
+    
     '''
         Compute the L2 loss in an efficient manner
         is_train: set True if it is in the training process
@@ -235,6 +236,42 @@ class kronecker_model:
                 curr_loss.backward()
         return loss
     
+    
+    def L2_loss_it(self, batch_size):
+        _loss = 0.
+        with torch.no_grad():
+            # make zero part index            
+            total_indices = np.zeros((np.sum(self.graph.first_dim)*np.prod(self.graph.middle_dim), self.graph.deg))
+            counter = 0
+            for i in tqdm(range(self.graph.num_tensor)):
+                curr_dims = [self.graph.first_dim[i]] + self.graph.middle_dim
+                curr_indices = np.reshape(np.indices(curr_dims), (self.graph.deg-1, -1))
+                curr_indices = np.transpose(curr_indices)
+                num_el = curr_indices.shape[0]
+                temp_indices = np.ones((num_el, 1)) * i
+                curr_indices = np.concatenate((curr_indices, temp_indices), axis=1)
+                total_indices[counter:counter + num_el, :] = curr_indices
+                counter += num_el
+            
+            assert(counter == total_indices.shape[0])
+            # Compute zero parts loss
+            
+            for i in tqdm(range(0, total_indices.shape[0], batch_size)):        
+                curr_batch_size = min(batch_size, total_indices.shape[0] - i)
+                preds = self.predict_batch(total_indices[i:i+curr_batch_size]).double()
+                _loss += torch.sum(torch.square(preds))
+            
+            # Handling non-zoer parts
+            for i in tqdm(range(0, self.graph.real_num_nonzero, batch_size)):    
+                # Extract nodes and edges
+                curr_batch_size = min(batch_size, self.graph.real_num_nonzero - i)
+                preds = self.predict_batch(self.graph.indices[i:i+curr_batch_size]).double()
+                vals = torch.FloatTensor(self.graph.val[i:i+curr_batch_size]).to(self.i_device).double()            
+                curr_loss = (torch.square(preds - vals) - torch.square(preds)).sum()                           
+                _loss += curr_loss.item()       
+               
+        return _loss
+        
     '''
         Compute the L2 loss in a naive manner
         batch_size: batch size for nonzeros       
