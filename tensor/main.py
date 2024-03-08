@@ -52,7 +52,6 @@ def train_model(k_model, args):
     perms = [perm.clone() for perm in k_model.perms]
     for epoch in range(start_epoch, args.max_epochs):                                                                   
         # Sample permutation         
-        start_time = time.time()
         k_model.model.eval()
         with torch.no_grad():
             for _ in range(args.perm_per_update):
